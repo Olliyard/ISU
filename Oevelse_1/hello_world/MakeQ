@@ -1,0 +1,30 @@
+Answer the following questions and remember to use code snippets if it serves to pave the way
+for better understanding.
+- What is a target?
+    Et target er den ønskede oprettede fil. I tilfældet hvor en .o fil ønskes genereret vil target være, f.eks. hello.o
+
+- What is a dependant and how is it related to a target?
+    Dependent er det prerequisite der skal være til stede for at generere target. I tilfældet med hello.o vil en dependent være hello.cpp, da .o ikke kan laves uden .cpp
+
+- Does it matter whether one uses tabs or spaces in a makefile?
+    Ja, det gør det. For en makefile er der en angiven "længde" for udførte kommandoer, disse angives ved et tab.
+
+- Why use variables in a makefile?
+    For at gøre den mere generel. Jo mere generisk makefile er gjort, jo flere tilfælde kan den anvendes i. I stedet for at kompilere samtlige filer, er det muligt at anvendes variabler som blot angiver placeholder information
+
+- How do you use a created makefile?
+    Gem den og kør den ved "make <navn på fil>"
+
+- Built in variables: $@, $< and $^ explain
+    $@ = fil navn for et target
+    $< = navnet på første prerequisite.
+    $^ = navnet på alle prerequisites.
+
+- $(CC) and $(CXX)
+    CC angiver C program compiler mens CXX angiver C++ compiler
+    
+- $(CFLAGS) and $(CXXFLAGS)
+    CFLAGS angiver flag der skal gives til C compiler mens CXXFLAGS angiver flag der skal gives til C++ compiler.
+    
+- What does $(SOURCES:.cpp=.o) mean?
+    Dette omdanner de .cpp filer der befinder sig i SOURCES om til .o filer. Dette er særligt en fordel ved oprettelse af OBJECTS.
