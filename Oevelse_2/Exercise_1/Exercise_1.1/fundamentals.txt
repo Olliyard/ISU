@@ -1,0 +1,28 @@
+What is the name of the POSIX function that creates a thread?
+int pthread_create();
+
+Which arguments does it take and what do they represent?
+int pthread_create(pthread_t *restict thread, const pthread_attr_t *restict attr, 
+void *(*start_routine)(void*), void *restrict arg);
+
+thread - angiver lokation for hvor thread ID skal gemmes.
+attr - angiver attributes for den skabte thread. hvis attr er NULL laves thread med default attributes.
+start_routine - main funktion for oprettet thread.
+arg - argumenter der skal gives til start_routine.
+
+What happens when a thread is created?
+thread kører start_routine funktionen med de givne argumenter fra arg. 
+
+What is a function pointer?
+en function pointer er en variable som gemmer funktionens addresse.
+Det er en måde hvorpå det er muligt at angive en funktion som parameter til en anden funktion.
+
+A function is to be supplied to the aforementioned function (thread creating function):
+ - Which argument(s) does it take?
+funktionen tager argumenterne arg fra pthread_create.
+
+ - What is the return type/value?
+hvad?
+
+ - What can they be used for and how?
+hvad?
