@@ -6,34 +6,32 @@
 #include <iostream>
 using namespace std;
 
-void *printInc(void*shVal);
-void *printRead(void*shVal);
+void *printInc(void*);
+void *printRead(void*);
+unsigned int shared = 0;
 
 int main(){
     pthread_t thread1, thread2;
     int incrementer, reader;
-    unsigned int shared = 0;
     cout << "Main: Creating threads" << endl;
     cout << "Main: Waiting for threads to finish" << endl;
 
-    incrementer = pthread_create(&thread1, NULL, *printInc, (void*) shared);
-    reader = pthread_create(&thread2, NULL, *printRead, (void*) shared);
+    incrementer = pthread_create(&thread1, NULL, *printInc, NULL);
+    reader = pthread_create(&thread2, NULL, *printRead, NULL);
 
     while(true){}
 }
 
-void *printInc(void*shVal){
+void *printInc(void*){
     while(true){
-        (unsigned long) ++shVal;
+        shared++;
         sleep(1);
     }
-    pthread_exit(NULL);
 }
 
-void *printRead(void*shVal){
+void *printRead(void*){
     while(true){
-        cout << "Read value: " << (unsigned long) shVal << endl;
+        cout << "Read value: " << shared << endl;
         sleep(1);
     }
-    pthread_exit(NULL);
 }
