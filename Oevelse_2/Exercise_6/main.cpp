@@ -5,26 +5,34 @@
 #include <unistd.h>
 #include <time.h>
 #include <iostream>
+#define vSize 10000
 using namespace std;
 
 void *writer(void*tID);
 
+int sleepTime;
 int errCount = 0;
-Vector vector1(100);
+Vector vector1(vSize);
 
 int main(int argc, char *argv[]){
-    int nThreads, sleepTime;
+    int nThreads;
     nThreads = atoi(argv[1]);
-    //sleepTime = atoi(argv[2]);
+    sleepTime = atoi(argv[2]);
     pthread_t thread_id[nThreads];
     
     if (argc < 2){
         perror("Not enough arguments given");
     }
-
     if(nThreads < 1 || nThreads > 100){
         cout << "Number must be between 1 and 100" << endl;
     }
+    if(sleepTime < 0){
+        cout << "Invalid time set" << endl;
+    }
+
+    cout << "Threads: " << nThreads << endl;
+    cout << "Delay: " << sleepTime << endl;
+    cout << "Elements: " << vSize << endl;
 
     cout << "Main: Creating threads" << endl;
     for(long int i = 1; i < nThreads+1; i++){
@@ -46,9 +54,9 @@ void *writer(void*tID){
     for(int i = 0; i < 10; i++){
         status = vector1.setAndTest(threadIDs);
         if(status == false){
-            cout << "Error on thread: " << threadIDs << endl;
-            pthread_exit(NULL);
+            errCount++;
         }
-        sleep(1);
+        usleep(sleepTime);
     }
+    pthread_exit(NULL);
 }
