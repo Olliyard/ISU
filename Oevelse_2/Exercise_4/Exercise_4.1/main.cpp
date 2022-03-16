@@ -10,12 +10,11 @@ using namespace std;
 void *writer(void*tID);
 
 int errCount = 0;
-Vector vector1(100);
+Vector vector1(10000);
 
 int main(int argc, char *argv[]){
-    int nThreads, sleepTime;
+    int nThreads;
     nThreads = atoi(argv[1]);
-    //sleepTime = atoi(argv[2]);
     pthread_t thread_id[nThreads];
     
     if (argc < 2){
@@ -25,6 +24,10 @@ int main(int argc, char *argv[]){
     if(nThreads < 1 || nThreads > 100){
         cout << "Number must be between 1 and 100" << endl;
     }
+
+    cout << "Threas: " << nThreads << endl;
+    cout << "Delay: " << "1 second" << endl;
+    cout << "Elements: " << "10000" << endl;
 
     cout << "Main: Creating threads" << endl;
     for(long int i = 1; i < nThreads+1; i++){
@@ -46,9 +49,9 @@ void *writer(void*tID){
     for(int i = 0; i < 10; i++){
         status = vector1.setAndTest(threadIDs);
         if(status == false){
-            cout << "Error on thread: " << threadIDs << endl;
-            pthread_exit(NULL);
+            errCount++;
         }
         sleep(1);
     }
+    pthread_exit(NULL);
 }
