@@ -1,6 +1,7 @@
 #ifndef VECTOR_HPP_
 #define VECTOR_HPP_
 #include <pthread.h>
+#include <semaphore.h>
 //=======================================================
 // Class: Vector
 // contains a size_-size vector of integers.
@@ -10,12 +11,13 @@
 //=======================================================
 class Vector
 {
-   pthread_mutex_t m;
+   sem_t semSet, semTest;
 public:
    Vector(unsigned int size = 10000) : size_(size)
       {
          vector_ = new int[size_];
-         pthread_mutex_init(&m, NULL);
+         sem_init(&semSet, 0, 1);
+         sem_init(&semTest, 0, 0);
          set(0);
       }
    ~Vector()
@@ -24,10 +26,13 @@ public:
       }
    bool setAndTest(int n)
       {
-         pthread_mutex_lock(&m);
+         sem_wait(&semSet);    //semSet 1->0 (låst)
          set(n);
+         sem_post(&semTest);   //semTest 0->1 (ulåst)
+
+         sem_wait(&semTest);   //semTest 1->0 (låst)
          bool testOut = test(n);
-         pthread_mutex_unlock(&m);
+         sem_post(&semSet);    //semSet 0->1 (ulåst)
          return testOut;
       }
    
