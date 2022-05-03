@@ -1,5 +1,4 @@
 #include "Vector.hpp"
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -8,28 +7,28 @@
 using namespace std;
 
 void *writer(void*tID);
-
 int errCount = 0;
-Vector vector1(10000);
+Vector vector1;
 
 int main(int argc, char *argv[]){
+    if (argc < 2){
+        perror("Not enough arguments given");
+        exit(1);
+    }
+   
     int nThreads;
     nThreads = atoi(argv[1]);
     pthread_t thread_id[nThreads];
     
-    if (argc < 2){
-        perror("Not enough arguments given");
-    }
-
     if(nThreads < 1 || nThreads > 100){
         cout << "Number must be between 1 and 100" << endl;
     }
 
-    cout << "Threas: " << nThreads << endl;
+    cout << "Threads: " << nThreads << endl;
     cout << "Delay: " << "1 second" << endl;
     cout << "Elements: " << "10000" << endl;
-
     cout << "Main: Creating threads" << endl;
+
     for(long int i = 1; i < nThreads+1; i++){
         pthread_create(&thread_id[i], NULL, *writer, (void*) i);
     }
@@ -46,6 +45,7 @@ void *writer(void*tID){
     bool status;
     long threadIDs;
     threadIDs = (long) tID;
+    
     for(int i = 0; i < 10; i++){
         status = vector1.setAndTest(threadIDs);
         if(status == false){
